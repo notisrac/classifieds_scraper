@@ -25,12 +25,16 @@ class TableRepository(object):
         self.table_service.insert_or_replace_entity(self.table_name, ad)
         pass
 
-    def Exists(self, ad: Advertisement):
+    def Update(self, ad: Advertisement):
+        ad.lastUpdatedDate: DateTime = DateTime.utcnow()
+        self.table_service.update_entity(self.table_name, ad)
+        pass
+
+    def GetIfExists(self, ad: Advertisement):
         try:
-            self.table_service.get_entity(self.table_name, ad.PartitionKey, ad.RowKey)
-            return True
+            return self.table_service.get_entity(self.table_name, ad.PartitionKey, ad.RowKey)
         except:
-            return False
+            return None
         pass
 
     def Get(self, id: str, site: str):
