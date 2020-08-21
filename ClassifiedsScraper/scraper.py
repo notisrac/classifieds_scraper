@@ -111,7 +111,7 @@ class Scraper(object):
     def markItemsAsNotified(self, ad_list):
         for ad in ad_list:
             ad.IsNotified = True
-            self.repo.Upsert(ad)
+            self.repo.Update(ad)
             pass
         pass
 
