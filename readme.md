@@ -10,6 +10,7 @@ Currently scraper modules are available for the following sites:
  - jofogas.hu
  - vatera.hu
  - hardverapro.hu
+ - ingatlan.com
 
 To create a plug-in, you need to inherit from ```scraper_base.py```:
 ```python
@@ -25,10 +26,10 @@ class SampleSiteScraper(ScraperBase):
         self.Name = 'sample_site'
         pass
 
-    def Scrape(self, search_string, search_category):
+    def Scrape(self, search_string) -> list:
         adList = []
 
-        url = f'https://www.samplesite.com?search={search_string}'
+        url = f'https://www.samplesite.com?{search_string}'
         req = requests.get(url)
 
         if not req.ok:

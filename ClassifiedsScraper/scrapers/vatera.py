@@ -11,10 +11,10 @@ class VateraScraper(ScraperBase):
         self.Name = 'vatera.hu'
         pass
 
-    def Scrape(self, search_string, search_category):
+    def Scrape(self, search_string) -> list:
         adList = []
 
-        url = f'https://www.vatera.hu/listings/index.php?q={search_string}'
+        url = f'https://www.vatera.hu/listings/index.php?{search_string}'
         req = requests.get(url)
 
         if not req.ok:

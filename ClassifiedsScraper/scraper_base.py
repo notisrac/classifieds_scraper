@@ -3,6 +3,6 @@ class ScraperBase(object):
         self.Name = 'scraper_base'
         pass
 
-    def Scrape(self, search_string, search_category):
+    def Scrape(self, search_string) -> list:
         pass
     pass

@@ -11,10 +11,10 @@ class HardveraproScraper(ScraperBase):
         self.Name = 'hardverapro.hu'
         pass
 
-    def Scrape(self, search_string, search_category):
+    def Scrape(self, search_string) -> list:
         adList = []
 
-        url = f'https://hardverapro.hu/aprok/keres.php?stext={search_string}&county=&stcid=&settlement=&stmid=&minprice=&maxprice=&company=&cmpid=&user=&usrid=&selling=1&stext_none='
+        url = f'https://hardverapro.hu/aprok/keres.php?{search_string}'
         req = requests.get(url)
 
         if not req.ok:

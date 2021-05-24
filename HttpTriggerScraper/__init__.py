@@ -10,13 +10,13 @@ from ..ClassifiedsScraper.scraper import Scraper
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('HTTP trigger at %s', datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat())
 
-    searchword = req.params.get('searchword')
-    if not searchword:
-        return func.HttpResponse('A search word must be provided!', status_code=400)
+    searchsettings = req.params.get('searchsettings')
+    if not searchsettings:
+        searchsettings = os.environ['search_settings']
 
-    scraper = Scraper(searchword, os.environ['AzureWebJobsStorage'], os.environ['storage_table_name'], os.environ['email_enabled'])
+    scraper = Scraper(searchsettings, os.environ['AzureWebJobsStorage'], os.environ['storage_table_name'], os.environ['email_enabled'])
     found_ads = scraper.run()
     logging.info(f'Found ads: {len(found_ads)}')
     logging.info('Scraper finished ad %s', datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat())
 
-    return func.HttpResponse(json.dumps(found_ads, indent=4, sort_keys=True, default=str), status_code=200)
+    return func.HttpResponse(json.dumps(found_ads, indent=4, sort_keys=True, default=str), status_code=200, mimetype='application/json')

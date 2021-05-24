@@ -6,16 +6,25 @@ import azure.functions as func
 
 from ..ClassifiedsScraper.scraper import Scraper
 
+from ..ClassifiedsScraper.advertisement_change import AdvertisementChange
+from ..ClassifiedsScraper.advertisement_change import ChangeType
+
 def main(mytimer: func.TimerRequest) -> None:
 
     if mytimer.past_due:
         logging.info('The timer is past due!')
 
-    scraper = Scraper(os.environ['search_term'], os.environ['AzureWebJobsStorage'], os.environ['storage_table_name'], os.environ['email_enabled'])
+    scraper = Scraper(os.environ['search_settings'], os.environ['AzureWebJobsStorage'], os.environ['storage_table_name'], os.environ['email_enabled'])
 
     logging.info('Scraper started at %s', datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat())
-    scraper.run()
-    not_notified_ad_list = scraper.getNotNotifiedAds()
+    ad_change_list = scraper.run()
+    # not_notified_ad_list = scraper.getNotNotifiedAds()
+    not_notified_ad_list = []
+    for ad_change in ad_change_list:
+        if ad_change.change_type != ChangeType.none:
+            not_notified_ad_list.append(ad_change)
+            pass
+        pass
     if not_notified_ad_list:
         try:
             scraper.send_notification(not_notified_ad_list)

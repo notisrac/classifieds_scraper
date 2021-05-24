@@ -11,10 +11,10 @@ class JofogasScraper(ScraperBase):
         self.Name = 'jofogas.hu'
         pass
 
-    def Scrape(self, search_string, search_category):
+    def Scrape(self, search_string) -> list:
         adList = []
 
-        url = f'https://www.jofogas.hu/magyarorszag?q={search_string}'
+        url = f'https://www.jofogas.hu/magyarorszag?{search_string}'
         req = requests.get(url)
 
         if not req.ok:
